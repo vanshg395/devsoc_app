@@ -24,8 +24,8 @@ class TimelineScreen extends StatelessWidget {
               height: 10,
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
                 child: PhotoView(
                   backgroundDecoration: BoxDecoration(
                     color: Color(0x00000000),
@@ -37,6 +37,9 @@ class TimelineScreen extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
           ],
         ),
