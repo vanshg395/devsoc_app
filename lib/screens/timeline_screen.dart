@@ -31,7 +31,7 @@ class TimelineScreen extends StatelessWidget {
                     color: Color(0x00000000),
                   ),
                   minScale: PhotoViewComputedScale.contained,
-                  maxScale: PhotoViewComputedScale.contained * 1.1,
+                  maxScale: PhotoViewComputedScale.contained,
                   imageProvider: AssetImage(
                     'assets/img/others/timeline.jpg',
                   ),

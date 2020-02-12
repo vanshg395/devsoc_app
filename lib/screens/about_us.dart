@@ -38,11 +38,15 @@ class AboutUsScreen extends StatelessWidget {
                 height: 20,
               ),
               Container(
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Color(0xFF072031),
                 ),
                 child: Image.asset('assets/img/others/sponsors.png'),
+              ),
+              SizedBox(
+                height: 25,
               ),
             ],
           ),
