@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth.dart';
 
 class EssentialsScreen extends StatelessWidget {
+  String getInitials(String name) {
+    String initials = '';
+    initials = name[0];
+    for (var i = 0; i < name.length; i++) {
+      if (name[i] == ' ') {
+        initials += name[i + 1];
+        break;
+      }
+    }
+    initials = initials.toUpperCase();
+    return initials;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // final email = ;
+    // print(email);
     return SafeArea(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -43,11 +61,12 @@ class EssentialsScreen extends StatelessWidget {
                       radius: 25,
                       backgroundColor: Colors.cyan,
                       child: Text(
-                        'VG',
+                        getInitials(
+                            Provider.of<Auth>(context, listen: false).name),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
-                    title: Text('VANSH GOEL'),
+                    title: Text(Provider.of<Auth>(context, listen: false).name),
                     subtitle: Text(
                       'PARTICIPANT',
                       style: TextStyle(color: Colors.grey),
@@ -68,7 +87,7 @@ class EssentialsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: QrImage(
                       padding: EdgeInsets.all(30),
-                      data: 'vanshg395@gmail.com',
+                      data: Provider.of<Auth>(context, listen: false).email,
                       backgroundColor: Color(0xFF072031),
                       foregroundColor: Colors.white,
                       embeddedImage:
@@ -76,6 +95,15 @@ class EssentialsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              RaisedButton(
+                child: Text('Logout'),
+                onPressed: () {
+                  Provider.of<Auth>(context, listen: false).logout();
+                },
               ),
               SizedBox(
                 height: 20,

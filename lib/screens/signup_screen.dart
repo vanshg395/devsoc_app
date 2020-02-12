@@ -3,15 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
+import './login_screen.dart';
 import '../providers/auth.dart';
-import './signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   bool visisblePassword = false;
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
     try {
-      await Provider.of<Auth>(context, listen: false).login(email, password);
+      await Provider.of<Auth>(context, listen: false).signUp(email, password);
     } catch (e) {
       print(e);
     }
@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 fit: BoxFit.cover,
                 height: double.infinity,
                 width: double.infinity,
+                // width: 100,
               ),
               Container(
                 width: double.infinity,
@@ -176,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           )
                                         : RaisedButton(
                                             child: Text(
-                                              'SIGN IN',
+                                              'REGISTER',
                                               style: TextStyle(
                                                 fontSize: 18,
                                               ),
@@ -189,11 +190,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   height: 30,
                                 ),
                                 FlatButton(
-                                  child: Text('New User? Register Here'),
+                                  child: Text('Already Registered? Login Here'),
                                   onPressed: () {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                        builder: (ctx) => SignupScreen(),
+                                        builder: (ctx) => LoginScreen(),
                                       ),
                                     );
                                   },
