@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 
-import './about_us.dart';
+import './about_us_screen.dart';
 import './timeline_screen.dart';
 import './essentials_screen.dart';
 import './speakers_screen.dart';
