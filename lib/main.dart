@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         builder: (context, auth, _) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData.dark().copyWith(
+            theme: ThemeData.light().copyWith(
               textTheme: TextTheme(
                 headline1: TextStyle(
                   fontSize: 30,

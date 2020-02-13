@@ -100,6 +100,8 @@ class EssentialsScreen extends StatelessWidget {
                 height: 30,
               ),
               RaisedButton(
+                color: Colors.blue,
+                textColor: Colors.white,
                 child: Text('Logout'),
                 onPressed: () {
                   Provider.of<Auth>(context, listen: false).logout();

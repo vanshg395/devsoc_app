@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
     'email': '',
     'password': '',
   };
+  String errorMessage = '';
 
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
@@ -32,8 +34,38 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).signUp(email, password);
-    } catch (e) {
-      print(e);
+    } catch (error) {
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'This email address is already in use.';
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email address';
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'This password is too weak.';
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Could not find a user with that email.';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid password.';
+      } else if (error.toString().contains('Not Authorised')) {
+        errorMessage = 'This email is not registered with us.';
+      } else {
+        errorMessage = 'Could not authenticate you. Please try again later.';
+      }
+      showDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: Text('Authentication Error'),
+          content: Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(errorMessage),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      );
     }
     setState(() {
       _isLoading = false;
@@ -53,12 +85,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 fit: BoxFit.cover,
                 height: double.infinity,
                 width: double.infinity,
-                // width: 100,
               ),
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                color: Color(0x99000000),
+                color: Colors.grey.withOpacity(0.1),
               ),
               SafeArea(
                 child: SingleChildScrollView(
@@ -107,7 +138,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       borderSide:
                                           BorderSide(color: Colors.grey),
                                     ),
-                                    border: OutlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.grey),
                                     ),
@@ -146,7 +177,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       borderSide:
                                           BorderSide(color: Colors.grey),
                                     ),
-                                    border: OutlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.grey),
                                     ),
@@ -173,9 +204,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                     borderRadius: BorderRadius.circular(50),
                                     child: _isLoading
                                         ? Center(
-                                            child: CircularProgressIndicator(),
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation(
+                                                Colors.blue,
+                                              ),
+                                            ),
                                           )
                                         : RaisedButton(
+                                            color: Colors.blue,
+                                            textColor: Colors.white,
                                             child: Text(
                                               'REGISTER',
                                               style: TextStyle(
@@ -190,6 +228,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   height: 30,
                                 ),
                                 FlatButton(
+                                  textColor: Colors.white,
                                   child: Text('Already Registered? Login Here'),
                                   onPressed: () {
                                     Navigator.of(context).pushReplacement(
