@@ -36,6 +36,18 @@ class Auth with ChangeNotifier {
     return null;
   }
 
+  Future<void> sendEmail(String token) async {
+    await http.post(
+      'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDyPS3MCX9ju0CcdAghaW3JAcb5Js5NI9A',
+      body: json.encode(
+        {
+          "requestType": "VERIFY_EMAIL",
+          "idToken": token,
+        },
+      ),
+    );
+  }
+
   Future<void> signUp(String email, String password) async {
     final res = await http.get('https://devsoc2020.firebaseio.com/users.json');
     final allowedUsers = json.decode(res.body) as Map<String, dynamic>;
@@ -67,6 +79,7 @@ class Auth with ChangeNotifier {
               ),
             ),
           );
+          await sendEmail(_token);
           _autoLogout();
           notifyListeners();
           final prefs = await SharedPreferences.getInstance();
@@ -113,7 +126,6 @@ class Auth with ChangeNotifier {
       final checkEmail = email.replaceAll('.', '_');
       _userId = allowedUsers[checkEmail]['Name'];
       _email = email;
-      print(_email);
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(
