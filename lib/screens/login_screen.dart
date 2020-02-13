@@ -35,16 +35,14 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await Provider.of<Auth>(context, listen: false).login(email, password);
     } catch (error) {
-      if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email address is already in use.';
-      } else if (error.toString().contains('INVALID_EMAIL')) {
+      if (error.toString().contains('INVALID_EMAIL')) {
         errorMessage = 'This is not a valid email address';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is too weak.';
-      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email.';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid password.';
+      } else if (error.toString().contains('ERROR_USER_NOT_FOUND')) {
+        errorMessage =
+            'There is no user record corresponding to this identifier.';
+      } else if (error.toString().contains('ERROR_WRONG_PASSWORD')) {
+        errorMessage =
+            'The password is invalid or the user does not have a password.';
       } else if (error.toString().contains('Not Authorised')) {
         errorMessage = 'This email is not registered with us.';
       } else if (error.toString().contains('TOO_MANY_ATTEMPTS_TRY_LATER')) {
@@ -140,6 +138,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.blue),
                                   ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey),
                                   ),
@@ -175,6 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   labelText: 'Password',
                                   labelStyle: TextStyle(color: Colors.white),
                                   focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.blue),
                                   ),
                                   enabledBorder: OutlineInputBorder(

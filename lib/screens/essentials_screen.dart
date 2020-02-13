@@ -20,8 +20,7 @@ class EssentialsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final email = ;
-    // print(email);
+    print(Provider.of<Auth>(context, listen: false).name);
     return SafeArea(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -53,7 +52,6 @@ class EssentialsScreen extends StatelessWidget {
               ),
               Container(
                 height: 80,
-                // alignment: Alignment.centerLeft,
                 child: Card(
                   color: Color(0xFF072031),
                   child: ListTile(

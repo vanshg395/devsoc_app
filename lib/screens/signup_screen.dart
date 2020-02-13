@@ -35,12 +35,12 @@ class _SignupScreenState extends State<SignupScreen> {
     try {
       await Provider.of<Auth>(context, listen: false).signUp(email, password);
     } catch (error) {
-      if (error.toString().contains('EMAIL_EXISTS')) {
+      if (error.toString().contains('ERROR_EMAIL_ALREADY_IN_USE')) {
         errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
         errorMessage = 'This is not a valid email address';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is too weak.';
+      } else if (error.toString().contains('ERROR_WEAK_PASSWORD')) {
+        errorMessage = 'The password must be 6 characters long or more.';
       } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
         errorMessage = 'Could not find a user with that email.';
       } else if (error.toString().contains('INVALID_PASSWORD')) {
@@ -50,7 +50,7 @@ class _SignupScreenState extends State<SignupScreen> {
       } else {
         errorMessage = 'Could not authenticate you. Please try again later.';
       }
-      showDialog(
+      await showDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
           title: Text('Authentication Error'),
@@ -138,6 +138,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                       borderSide:
                                           BorderSide(color: Colors.grey),
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey),
+                                    ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.grey),
@@ -174,6 +178,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                     labelText: 'Password',
                                     labelStyle: TextStyle(color: Colors.white),
                                     focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.grey),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.grey),
                                     ),
