@@ -81,12 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
         value: SystemUiOverlayStyle.light,
         child: Stack(
           children: <Widget>[
-            Image.asset(
-              'assets/img/others/start.gif',
-              fit: BoxFit.cover,
-              height: double.infinity,
-              width: double.infinity,
-            ),
+            // Image.asset(
+            //   'assets/img/others/start.gif',
+            //   fit: BoxFit.cover,
+            //   height: double.infinity,
+            //   width: double.infinity,
+            // ),
             Container(
               width: double.infinity,
               height: double.infinity,

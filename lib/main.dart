@@ -58,6 +58,24 @@ class MyApp extends StatelessWidget {
                 }
               },
             ),
+            // home: auth.isAuth
+            //     ? TabsScreen()
+            //     // ? FutureBuilder(
+            //     //     future: auth.isVerified,
+            //     //     builder: (ctx, res) {
+            //     //       print(res);
+            //     //       if (res.connectionState == ConnectionState.waiting) {
+            //     //         return AuthLoader();
+            //     //       } else {
+            //     //         if (res.data) {
+            //     //           return TabsScreen();
+            //     //         } else {
+            //     //           return VerifyScreen();
+            //     //         }
+            //     //       }
+            //     //     },
+            //     //   )
+            //     : LoginScreen(),
           );
         },
       ),
