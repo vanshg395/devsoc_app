@@ -7,14 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Auth with ChangeNotifier {
   String _userId;
   String _email;
   final _auth = FirebaseAuth.instance;
   FirebaseUser _user;
+  StreamSubscription userAuthSub;
 
   static const API_KEY = 'AIzaSyDyPS3MCX9ju0CcdAghaW3JAcb5Js5NI9A';
+
+  @override
+  void dispose() {
+    if (userAuthSub != null) {
+      userAuthSub.cancel();
+      userAuthSub = null;
+    }
+    super.dispose();
+  }
 
   Future<bool> get isAuth async {
     final _user = await user;
@@ -66,10 +77,8 @@ class Auth with ChangeNotifier {
               email: email, password: password);
           if (newUser != null) {
             final dbEmail = email.replaceAll('.', '_');
-            await http.put(
-              'https://devsoc2020.firebaseio.com/food/$dbEmail.json',
-              body: json.encode(0),
-            );
+            final databaseReference = FirebaseDatabase.instance.reference();
+            databaseReference.child("food").child(dbEmail).set(0);
             final allowedUsers = json.decode(res.body) as Map<String, dynamic>;
             final checkEmail = email.replaceAll('.', '_');
             _userId = allowedUsers[checkEmail]['Name'];
@@ -84,7 +93,7 @@ class Auth with ChangeNotifier {
                 'userId': _userId,
               },
             );
-            prefs.setString('userData', userData);
+            await prefs.setString('userData', userData);
           }
         } catch (e) {
           throw e;

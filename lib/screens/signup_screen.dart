@@ -48,9 +48,27 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).signUp(email, password);
+      await showDialog(
+        context: context,
+        child: CupertinoAlertDialog(
+          title: Text('Success'),
+          content: Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(
+                'You are successfully registered! Please restart your app to login.'),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        ),
+      );
     } catch (error) {
-      if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email address is already in use.';
+      if (error.toString().contains('ERROR_EMAIL_ALREADY_IN_USE')) {
+        errorMessage =
+            'The email address is already in use by another account.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
         errorMessage = 'This is not a valid email address';
       } else if (error.toString().contains('WEAK_PASSWORD')) {
