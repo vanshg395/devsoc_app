@@ -73,52 +73,52 @@ class _TabsScreenState extends State<TabsScreen> {
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/img/icons/timeline.svg',
-              height: 30,
+              height: 23,
               color: Colors.grey,
             ),
             activeIcon: SvgPicture.asset(
               'assets/img/icons/timeline.svg',
-              height: 30,
-              color: Colors.white,
+              height: 23,
+              color: Color(0xff3284ff),
             ),
             title: SizedBox(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/img/icons/speaker.svg',
-              height: 30,
+              height: 23,
               color: Colors.grey,
             ),
             activeIcon: SvgPicture.asset(
               'assets/img/icons/speaker.svg',
-              height: 30,
-              color: Colors.white,
+              height: 23,
+              color: Color(0xff3284ff),
             ),
             title: SizedBox(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/img/icons/support.svg',
-              height: 30,
+              height: 23,
               color: Colors.grey,
             ),
             activeIcon: SvgPicture.asset(
               'assets/img/icons/support.svg',
-              height: 30,
-              color: Colors.white,
+              height: 23,
+              color: Color(0xff3284ff),
             ),
             title: SizedBox(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/img/icons/user.svg',
-              height: 30,
+              height: 23,
               color: Colors.grey,
             ),
             activeIcon: SvgPicture.asset(
               'assets/img/icons/user.svg',
-              height: 30,
-              color: Colors.white,
+              height: 23,
+              color: Color(0xff3284ff),
             ),
             title: SizedBox(),
           ),

@@ -14,7 +14,7 @@ class Auth with ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   FirebaseUser _user;
 
-  String API_KEY = 'AIzaSyDyPS3MCX9ju0CcdAghaW3JAcb5Js5NI9A';
+  static const API_KEY = 'AIzaSyDyPS3MCX9ju0CcdAghaW3JAcb5Js5NI9A';
 
   Future<bool> get isAuth async {
     final _user = await user;

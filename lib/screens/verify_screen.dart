@@ -2,10 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import '../providers/auth.dart';
 
-class VerifyScreen extends StatelessWidget {
+class VerifyScreen extends StatefulWidget {
+  @override
+  _VerifyScreenState createState() => _VerifyScreenState();
+}
+
+class _VerifyScreenState extends State<VerifyScreen> {
+  VideoPlayerController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/img/others/back_vid.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    _controller.play();
+    _controller.setLooping(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,16 +31,19 @@ class VerifyScreen extends StatelessWidget {
         value: SystemUiOverlayStyle.light,
         child: Stack(
           children: <Widget>[
-            Image.asset(
-              'assets/img/others/start.gif',
-              fit: BoxFit.cover,
-              height: double.infinity,
-              width: double.infinity,
+            Center(
+              child: _controller.value.initialized
+                  ? AspectRatio(
+                      // aspectRatio: _controller.value.aspectRatio,
+                      aspectRatio: 9 / 16,
+                      child: VideoPlayer(_controller),
+                    )
+                  : Container(),
             ),
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.grey.withOpacity(0.1),
+              color: Color(0xCC14192D),
             ),
             SafeArea(
               child: SingleChildScrollView(
@@ -35,15 +56,31 @@ class VerifyScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(top: 50.0, left: 20),
-                            child: Text(
-                              'DEVSOC 20',
-                              style: Theme.of(context).textTheme.headline1,
+                            padding: EdgeInsets.only(top: 30.0, left: 20),
+                            child: Row(
+                              textBaseline: TextBaseline.alphabetic,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              children: <Widget>[
+                                Text(
+                                  'DEVSOC',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      textBaseline: TextBaseline.alphabetic,
+                                      fontFamily: 'SFProTextSemibold'),
+                                ),
+                                Text(
+                                  '20',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    textBaseline: TextBaseline.alphabetic,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Flexible(
                             child: Container(
-                              height: 150,
+                              height: 100,
                               padding: EdgeInsets.only(top: 20),
                               child: Image.asset(
                                 'assets/img/others/devsoc_shadow.png',
@@ -55,7 +92,7 @@ class VerifyScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),

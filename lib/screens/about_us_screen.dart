@@ -7,7 +7,7 @@ class AboutUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        // padding: EdgeInsets.symmetric(horizontal: 20),
         color: Color(0xFF030D18),
         child: SingleChildScrollView(
           child: Column(
@@ -16,6 +16,7 @@ class AboutUsScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(
                   top: 30,
+                  left: 20,
                 ),
                 child: Text(
                   'ABOUT US',
@@ -25,7 +26,17 @@ class AboutUsScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              Text('OUR TEAM'),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'OUR TEAM',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'SFProDisplayMed',
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -33,11 +44,22 @@ class AboutUsScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              Text('SPONSORS'),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'SPONSORS',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'SFProDisplayMed',
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
               SizedBox(
                 height: 20,
               ),
               Container(
+                margin: EdgeInsets.symmetric(horizontal: 40),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -46,7 +68,7 @@ class AboutUsScreen extends StatelessWidget {
                 child: Image.asset('assets/img/others/sponsors.png'),
               ),
               SizedBox(
-                height: 25,
+                height: 30,
               ),
             ],
           ),

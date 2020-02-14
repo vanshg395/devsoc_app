@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/auth.dart';
 
@@ -16,6 +17,16 @@ class EssentialsScreen extends StatelessWidget {
     }
     initials = initials.toUpperCase();
     return initials;
+  }
+
+  void _launch() async {
+    const url = 'https://goo.gl/maps/mfYjXTH365RehE3XA';
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+      );
+    }
   }
 
   @override
@@ -39,35 +50,62 @@ class EssentialsScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              Image.asset(
-                'assets/img/others/map.png',
-                fit: BoxFit.cover,
+              InkWell(
+                onTap: _launch,
+                child: Image.asset(
+                  'assets/img/others/map.png',
+                  fit: BoxFit.cover,
+                ),
               ),
               SizedBox(
                 height: 30,
               ),
-              Text('MY INFO'),
+              Text(
+                'MY INFO',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'SFProTextSemiMed',
+                  color: Colors.grey,
+                ),
+              ),
               SizedBox(
                 height: 5,
               ),
               Container(
                 height: 80,
                 child: Card(
+                  margin: EdgeInsets.symmetric(horizontal: 0),
                   color: Color(0xFF072031),
                   child: ListTile(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                     leading: CircleAvatar(
                       radius: 25,
-                      backgroundColor: Colors.cyan,
+                      backgroundColor: Color(0xff3284ff),
                       child: Text(
                         getInitials(
-                            Provider.of<Auth>(context, listen: false).name),
-                        style: TextStyle(color: Colors.white),
+                          Provider.of<Auth>(context, listen: false).name,
+                        ),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'SFProTextSemiMed',
+                            color: Colors.white),
                       ),
                     ),
-                    title: Text(Provider.of<Auth>(context, listen: false).name),
+                    title: Text(
+                      Provider.of<Auth>(context, listen: false).name,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'SFProTextSemiMed',
+                      ),
+                    ),
                     subtitle: Text(
                       'PARTICIPANT',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'SFProTextSemiLight',
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -75,12 +113,20 @@ class EssentialsScreen extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Text('QR CODE'),
+              Text(
+                'QR CODE',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'SFProTextSemiMed',
+                  color: Colors.grey,
+                ),
+              ),
               SizedBox(
                 height: 10,
               ),
               Center(
                 child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: QrImage(
@@ -98,9 +144,18 @@ class EssentialsScreen extends StatelessWidget {
                 height: 30,
               ),
               RaisedButton(
-                color: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                color: Color(0xff3284ff),
                 textColor: Colors.white,
-                child: Text('Logout'),
+                child: Text(
+                  'LOGOUT',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'SFProTextSemiMed',
+                  ),
+                ),
                 onPressed: () {
                   Provider.of<Auth>(context, listen: false).logout();
                 },

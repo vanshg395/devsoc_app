@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import './login_screen.dart';
 import '../providers/auth.dart';
@@ -13,6 +14,8 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  VideoPlayerController _controller;
+
   bool visisblePassword = false;
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -21,6 +24,17 @@ class _SignupScreenState extends State<SignupScreen> {
     'password': '',
   };
   String errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/img/others/sign_up.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    _controller.play();
+    _controller.setLooping(true);
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
@@ -80,16 +94,19 @@ class _SignupScreenState extends State<SignupScreen> {
         value: SystemUiOverlayStyle.light,
         child: Stack(
           children: <Widget>[
-            // Image.asset(
-            //   'assets/img/others/start.gif',
-            //   fit: BoxFit.cover,
-            //   height: double.infinity,
-            //   width: double.infinity,
-            // ),
+            Center(
+              child: _controller.value.initialized
+                  ? AspectRatio(
+                      // aspectRatio: _controller.value.aspectRatio,
+                      aspectRatio: 9 / 16,
+                      child: VideoPlayer(_controller),
+                    )
+                  : Container(),
+            ),
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.grey.withOpacity(0.1),
+              color: Color(0xCC14192D),
             ),
             SafeArea(
               child: SingleChildScrollView(
@@ -102,15 +119,31 @@ class _SignupScreenState extends State<SignupScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(top: 50.0, left: 20),
-                            child: Text(
-                              'DEVSOC 20',
-                              style: Theme.of(context).textTheme.headline1,
+                            padding: EdgeInsets.only(top: 30.0, left: 20),
+                            child: Row(
+                              textBaseline: TextBaseline.alphabetic,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              children: <Widget>[
+                                Text(
+                                  'DEVSOC',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      textBaseline: TextBaseline.alphabetic,
+                                      fontFamily: 'SFProTextSemibold'),
+                                ),
+                                Text(
+                                  '20',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    textBaseline: TextBaseline.alphabetic,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Flexible(
                             child: Container(
-                              height: 150,
+                              height: 100,
                               padding: EdgeInsets.only(top: 20),
                               child: Image.asset(
                                 'assets/img/others/devsoc_shadow.png',
@@ -122,7 +155,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -135,7 +168,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                   labelText: 'Email',
                                   labelStyle: TextStyle(color: Colors.white),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey),
@@ -172,7 +211,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                   labelText: 'Password',
                                   labelStyle: TextStyle(color: Colors.white),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.grey),
@@ -190,11 +235,11 @@ class _SignupScreenState extends State<SignupScreen> {
                                 },
                               ),
                               SizedBox(
-                                height: 50,
+                                height: 30,
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.8,
-                                height: 50,
+                                height: 40,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: _isLoading
@@ -206,12 +251,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                           ),
                                         )
                                       : RaisedButton(
-                                          color: Colors.blue,
+                                          color: Color(0xff3284ff),
                                           textColor: Colors.white,
                                           child: Text(
                                             'REGISTER',
                                             style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 14,
+                                              fontFamily: 'SFProTextSemiMed',
                                             ),
                                           ),
                                           onPressed: _submit,
@@ -219,11 +265,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                               SizedBox(
-                                height: 30,
+                                height: 10,
                               ),
                               FlatButton(
                                 textColor: Colors.white,
-                                child: Text('Already Registered? Login Here'),
+                                child: Text(
+                                  'Already Registered? Login Here',
+                                  style: TextStyle(
+                                    fontFamily: 'SFProDisplayMed',
+                                    letterSpacing: 1,
+                                  ),
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(

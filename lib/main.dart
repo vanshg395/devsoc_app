@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               textTheme: TextTheme(
                 headline1: TextStyle(
                   fontSize: 30,
-                  letterSpacing: 5,
+                  letterSpacing: 2,
                   fontFamily: 'SFProTextSemibold',
                 ),
               ),
