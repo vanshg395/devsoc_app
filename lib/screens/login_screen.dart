@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(errorMessage),
           ),
           actions: <Widget>[
-            FlatButton(
+            CupertinoDialogAction(
               child: Text('OK'),
               onPressed: () => Navigator.of(context).pop(),
             )

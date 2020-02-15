@@ -24,6 +24,8 @@ class _SignupScreenState extends State<SignupScreen> {
     'password': '',
   };
   String errorMessage = '';
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -48,6 +50,11 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).signUp(email, password);
+      _emailController.clear();
+      _passwordController.clear();
+      setState(() {
+        _isLoading = false;
+      });
       await showDialog(
         context: context,
         child: CupertinoAlertDialog(
@@ -58,7 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 'You are successfully registered! Please restart your app to login.'),
           ),
           actions: <Widget>[
-            FlatButton(
+            CupertinoDialogAction(
               child: Text('OK'),
               onPressed: () => Navigator.of(context).pop(),
             )
@@ -91,7 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Text(errorMessage),
           ),
           actions: <Widget>[
-            FlatButton(
+            CupertinoDialogAction(
               child: Text('OK'),
               onPressed: () => Navigator.of(context).pop(),
             )
@@ -182,6 +189,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Column(
                             children: <Widget>[
                               TextFormField(
+                                controller: _emailController,
                                 decoration: InputDecoration(
                                   labelText: 'Email',
                                   labelStyle: TextStyle(color: Colors.white),
@@ -212,6 +220,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 height: 20,
                               ),
                               TextFormField(
+                                controller: _passwordController,
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
                                     icon: Icon(
