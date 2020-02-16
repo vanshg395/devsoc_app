@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class SpeakersScreen extends StatelessWidget {
+class SpeakersScreen extends StatefulWidget {
+  @override
+  _SpeakersScreenState createState() => _SpeakersScreenState();
+}
+
+class _SpeakersScreenState extends State<SpeakersScreen> {
+  VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/img/others/back_vid.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    _controller.play();
+    _controller.setLooping(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -11,15 +30,18 @@ class SpeakersScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
+                color: Color(0xFF030D18),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: Stack(
                   children: <Widget>[
                     Center(
-                      child: Image.asset(
-                        'assets/img/others/start.gif',
-                        height: 500,
-                      ),
+                      child: _controller.value.initialized
+                          ? AspectRatio(
+                              aspectRatio: _controller.value.aspectRatio,
+                              child: VideoPlayer(_controller),
+                            )
+                          : Container(),
                     ),
                     LayoutBuilder(
                       builder: (ctx, cons) => Container(
@@ -51,7 +73,7 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'FAQ',
                   style: TextStyle(
-                    fontSize: 26,
+                    fontSize: 24,
                     letterSpacing: 2,
                     fontFamily: 'SFProTextSemibold',
                   ),
@@ -65,9 +87,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'WHAT IS THE VENUE OF THE HACKATHON?',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayMed',
                   ),
                 ),
               ),
@@ -79,9 +101,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'First Phase of the Hackathon is Online that is idea submission. Main event which is from 16th March will be conducted in Anna Auditorium, VIT Vellore.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayLight',
                     color: Colors.grey,
                   ),
                 ),
@@ -94,9 +116,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'IS IT NECESSARY FOR THE WHOLE TO BE PRESENT ALL THE TIME?',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayMed',
                   ),
                 ),
               ),
@@ -108,9 +130,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'No, not necessarily, but atleast one member should be present while pitching.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayLight',
                     color: Colors.grey,
                   ),
                 ),
@@ -123,9 +145,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'DO I NEED TO HAVE SPECIFIC QUALIFICATIONS TO BE PART OF THE HACKATHON?',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayMed',
                   ),
                 ),
               ),
@@ -137,9 +159,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'If you love to code, you\'re more than welcome to participate in the Hackathon.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayLight',
                     color: Colors.grey,
                   ),
                 ),
@@ -152,9 +174,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'WHAT IS THE COST OF THE HACKATHON?',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayMed',
                   ),
                 ),
               ),
@@ -166,9 +188,9 @@ class SpeakersScreen extends StatelessWidget {
                 child: Text(
                   'There is no registration fee for the Hackathon. It is absolutely free.',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     letterSpacing: 2,
-                    fontFamily: 'SFProTextSemibold',
+                    fontFamily: 'SFProDisplayLight',
                     color: Colors.grey,
                   ),
                 ),

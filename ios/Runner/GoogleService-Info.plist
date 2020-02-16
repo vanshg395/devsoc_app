@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1066241676681-9aqlk255geubde7bvpgnktnnthr2bne6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1066241676681-9aqlk255geubde7bvpgnktnnthr2bne6</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1066241676681-l3000qbpkdpfefr4g08to3hmbees7am0.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCfyXC2k-Z3thbUmaHb0UQOAydKuFKlmvI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1066241676681</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.codechefvit.devsocApp</string>
+	<key>PROJECT_ID</key>
+	<string>devsoc2020</string>
+	<key>STORAGE_BUCKET</key>
+	<string>devsoc2020.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1066241676681:ios:e70e288e635ec14f7e3d58</string>
+	<key>DATABASE_URL</key>
+	<string>https://devsoc2020.firebaseio.com</string>
+</dict>
+</plist>

@@ -2,12 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import './screens/verify_screen.dart';
 import './screens/auth_loader.dart';
 import './screens/tabs_screen.dart';
 import './screens/login_screen.dart';
 import './providers/auth.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+      RestartWidget(
+        child: MyApp(),
+      ),
+    );
+
+class RestartWidget extends StatefulWidget {
+  RestartWidget({this.child});
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>().restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: widget.child,
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -18,7 +54,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: Auth(),
       child: Consumer<Auth>(
-        builder: (context, auth, _) {
+        builder: (ctx, auth, _) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData.light().copyWith(
@@ -30,16 +66,33 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: auth.isAuth
-                ? TabsScreen()
-                : FutureBuilder(
-                    future: auth.tryAutoLogin(),
-                    builder: (context, authResultSnapshot) =>
-                        authResultSnapshot.connectionState ==
-                                ConnectionState.waiting
-                            ? AuthLoader()
-                            : LoginScreen(),
-                  ),
+            home: FutureBuilder(
+              future: auth.isAuth,
+              builder: (ctx, resultSnapshot) {
+                if (resultSnapshot.connectionState == ConnectionState.waiting) {
+                  return AuthLoader();
+                } else {
+                  if (resultSnapshot.data) {
+                    return FutureBuilder(
+                      future: auth.isVerified,
+                      builder: (ctx, res) {
+                        if (res.connectionState == ConnectionState.waiting) {
+                          return AuthLoader();
+                        } else {
+                          if (res.data) {
+                            return TabsScreen();
+                          } else {
+                            return VerifyScreen();
+                          }
+                        }
+                      },
+                    );
+                  } else {
+                    return LoginScreen();
+                  }
+                }
+              },
+            ),
           );
         },
       ),

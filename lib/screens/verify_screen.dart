@@ -1,24 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
-class VerifyScreen extends StatelessWidget {
+import '../providers/auth.dart';
+
+class VerifyScreen extends StatefulWidget {
+  @override
+  _VerifyScreenState createState() => _VerifyScreenState();
+}
+
+class _VerifyScreenState extends State<VerifyScreen> {
+  VideoPlayerController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/img/others/back_vid.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    _controller.play();
+    _controller.setLooping(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF030D18),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Stack(
           children: <Widget>[
-            Image.asset(
-              'assets/img/others/start.gif',
-              fit: BoxFit.cover,
-              height: double.infinity,
-              width: double.infinity,
+            Center(
+              child: _controller.value.initialized
+                  ? AspectRatio(
+                      aspectRatio: 9 / 16,
+                      child: VideoPlayer(_controller),
+                    )
+                  : Container(),
             ),
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: Colors.grey.withOpacity(0.1),
+              color: Color(0xCC14192D),
             ),
             SafeArea(
               child: SingleChildScrollView(
@@ -31,32 +56,119 @@ class VerifyScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(top: 50.0, left: 20),
-                            child: Text(
-                              'DEVSOC 20',
-                              style: Theme.of(context).textTheme.headline1,
+                            padding: EdgeInsets.only(top: 30.0, left: 20),
+                            child: Row(
+                              textBaseline: TextBaseline.alphabetic,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              children: <Widget>[
+                                Text(
+                                  'DEVSOC',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      textBaseline: TextBaseline.alphabetic,
+                                      fontFamily: 'SFProTextSemibold'),
+                                ),
+                                Text(
+                                  '20',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    textBaseline: TextBaseline.alphabetic,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Flexible(
                             child: Container(
-                              height: 150,
+                              height: 100,
                               padding: EdgeInsets.only(top: 20),
                               child: Image.asset(
                                 'assets/img/others/devsoc_shadow.png',
                                 fit: BoxFit.fitHeight,
-                                // width: 100,
                               ),
                             ),
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
-                          children: <Widget>[],
+                          children: <Widget>[
+                            Text(
+                              'A verification mail has been sent to your email.',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(
+                                    fontSize: 18,
+                                    letterSpacing: 0,
+                                    fontFamily: 'SFProDisplayMed',
+                                  ),
+                            ),
+                            Divider(
+                              thickness: 2,
+                              color: Colors.grey,
+                            ),
+                            InkWell(
+                              child: Text(
+                                'Didn\'t receive email? Click Here.',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    .copyWith(
+                                      fontSize: 18,
+                                      letterSpacing: 0,
+                                    ),
+                              ),
+                              onTap: () async {
+                                await showDialog(
+                                  context: context,
+                                  builder: (context) => CupertinoAlertDialog(
+                                    title: Text('Success'),
+                                    content: Text(
+                                        'Validation Mail has been re-sent to your mail'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('OK'),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      )
+                                    ],
+                                  ),
+                                );
+                                await Provider.of<Auth>(context, listen: false)
+                                    .sendEmail();
+                              },
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              height: 50,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: RaisedButton(
+                                  color: Color(0xFFFE2851),
+                                  textColor: Colors.white,
+                                  child: Text(
+                                    'GET STARTED',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    await Provider.of<Auth>(context,
+                                            listen: false)
+                                        .logout();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

@@ -1,22 +1,36 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:devsoc_app/models/HttpException.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+import '../models/HttpException.dart';
 
 class Auth with ChangeNotifier {
-  String _token;
-  DateTime _expiryDate;
   String _userId;
   String _email;
-  Timer _authTimer;
+  final _auth = FirebaseAuth.instance;
+  FirebaseUser _user;
+  StreamSubscription userAuthSub;
 
-  String API_KEY = 'AIzaSyDyPS3MCX9ju0CcdAghaW3JAcb5Js5NI9A';
+  static const API_KEY = 'AIzaSyDyPS3MCX9ju0CcdAghaW3JAcb5Js5NI9A';
 
-  bool get isAuth {
-    return token != null;
+  @override
+  void dispose() {
+    if (userAuthSub != null) {
+      userAuthSub.cancel();
+      userAuthSub = null;
+    }
+    super.dispose();
+  }
+
+  Future<bool> get isAuth async {
+    final _user = await user;
+    return _user != null;
   }
 
   String get email {
@@ -27,25 +41,30 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
-  String get token {
-    if (_expiryDate != null &&
-        _expiryDate.isAfter(DateTime.now()) &&
-        _token != null) {
-      return _token;
-    }
-    return null;
+  Future<bool> get isVerified async {
+    final usr = await _auth.currentUser();
+    return usr.isEmailVerified;
   }
 
-  Future<void> sendEmail(String token) async {
-    await http.post(
-      'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDyPS3MCX9ju0CcdAghaW3JAcb5Js5NI9A',
-      body: json.encode(
-        {
-          "requestType": "VERIFY_EMAIL",
-          "idToken": token,
-        },
-      ),
-    );
+  Future<FirebaseUser> get user async {
+    _user = await _auth.currentUser();
+    return _user;
+  }
+
+  Future<void> sendEmail() async {
+    final usr = await user;
+    await usr.sendEmailVerification();
+  }
+
+  Future<void> getData() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      return;
+    }
+    final extractedUserData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+    _email = extractedUserData['email'];
+    _userId = extractedUserData['userId'];
   }
 
   Future<void> signUp(String email, String password) async {
@@ -55,43 +74,28 @@ class Auth with ChangeNotifier {
     try {
       if (allowedUsers.keys.toList().contains(checkEmail)) {
         try {
-          final response = await http.post(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$API_KEY',
-            body: json.encode(
+          final newUser = await _auth.createUserWithEmailAndPassword(
+              email: email, password: password);
+          if (newUser != null) {
+            final dbEmail = email.replaceAll('.', '_');
+            final databaseReference = FirebaseDatabase.instance.reference();
+            databaseReference.child("food").child(dbEmail).set(0);
+            final allowedUsers = json.decode(res.body) as Map<String, dynamic>;
+            final checkEmail = email.replaceAll('.', '_');
+            _userId = allowedUsers[checkEmail]['Name'];
+            _user = await _auth.currentUser();
+            _email = _user.email;
+            notifyListeners();
+            await sendEmail();
+            final prefs = await SharedPreferences.getInstance();
+            final userData = json.encode(
               {
                 'email': email,
-                'password': password,
-                'returnSecureToken': true,
+                'userId': _userId,
               },
-            ),
-          );
-          final responseData = json.decode(response.body);
-          if (responseData['error'] != null) {
-            throw HttpException(responseData['error']['message']);
+            );
+            await prefs.setString('userData', userData);
           }
-          _token = responseData['idToken'];
-          _userId = allowedUsers[checkEmail]['Name'];
-          _email = email;
-          _expiryDate = DateTime.now().add(
-            Duration(
-              seconds: int.parse(
-                responseData['expiresIn'],
-              ),
-            ),
-          );
-          await sendEmail(_token);
-          _autoLogout();
-          notifyListeners();
-          final prefs = await SharedPreferences.getInstance();
-          final userData = json.encode(
-            {
-              'token': _token,
-              'userId': _userId,
-              'email': _email,
-              'expiryDate': _expiryDate.toIso8601String(),
-            },
-          );
-          prefs.setString('userData', userData);
         } catch (e) {
           throw e;
         }
@@ -105,90 +109,36 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     try {
-      final response = await http.post(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$API_KEY',
-        body: json.encode(
+      final signedInUser = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      if (signedInUser != null) {
+        _user = await _auth.currentUser();
+        _email = _user.email;
+        final res =
+            await http.get('https://devsoc2020.firebaseio.com/users.json');
+        final allowedUsers = json.decode(res.body) as Map<String, dynamic>;
+        final checkEmail = email.replaceAll('.', '_');
+        _userId = allowedUsers[checkEmail]['Name'];
+        notifyListeners();
+        final prefs = await SharedPreferences.getInstance();
+        final userData = json.encode(
           {
             'email': email,
-            'password': password,
-            'returnSecureToken': true,
+            'userId': _userId,
           },
-        ),
-      );
-      final responseData = json.decode(response.body);
-      if (responseData['error'] != null) {
-        throw HttpException(responseData['error']['message']);
+        );
+        prefs.setString('userData', userData);
       }
-      _token = responseData['idToken'];
-      final res =
-          await http.get('https://devsoc2020.firebaseio.com/users.json');
-      final allowedUsers = json.decode(res.body) as Map<String, dynamic>;
-      final checkEmail = email.replaceAll('.', '_');
-      _userId = allowedUsers[checkEmail]['Name'];
-      _email = email;
-      _expiryDate = DateTime.now().add(
-        Duration(
-          seconds: int.parse(
-            responseData['expiresIn'],
-          ),
-        ),
-      );
-      _autoLogout();
-      notifyListeners();
-      final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode(
-        {
-          'token': _token,
-          'userId': _userId,
-          'email': _email,
-          'expiryDate': _expiryDate.toIso8601String(),
-        },
-      );
-      prefs.setString('userData', userData);
     } catch (e) {
       throw e;
     }
   }
 
-  Future<bool> tryAutoLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('userData')) {
-      return false;
-    }
-    final extractedUserData =
-        json.decode(prefs.getString('userData')) as Map<String, Object>;
-    final expiryDate = DateTime.parse(extractedUserData['expiryDate']);
-
-    if (expiryDate.isBefore(DateTime.now())) {
-      return false;
-    }
-    _token = extractedUserData['token'];
-    _userId = extractedUserData['userId'];
-    _email = extractedUserData['email'];
-    _expiryDate = expiryDate;
-    notifyListeners();
-    _autoLogout();
-    return true;
-  }
-
   Future<void> logout() async {
-    _token = null;
+    await _auth.signOut();
+    _email = null;
     _userId = null;
-    _expiryDate = null;
-    if (_authTimer != null) {
-      _authTimer.cancel();
-      _authTimer = null;
-    }
+    _user = null;
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-  }
-
-  void _autoLogout() {
-    if (_authTimer != null) {
-      _authTimer.cancel();
-    }
-    final timeToExpiry = _expiryDate.difference(DateTime.now()).inSeconds;
-    _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }

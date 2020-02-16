@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 import './login_screen.dart';
 import '../providers/auth.dart';
+import '../main.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -13,6 +15,8 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  VideoPlayerController _controller;
+
   bool visisblePassword = false;
   bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -21,6 +25,19 @@ class _SignupScreenState extends State<SignupScreen> {
     'password': '',
   };
   String errorMessage = '';
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.asset('assets/img/others/sign_up.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    _controller.play();
+    _controller.setLooping(true);
+  }
 
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
@@ -34,9 +51,11 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).signUp(email, password);
+      RestartWidget.restartApp(context);
     } catch (error) {
-      if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email address is already in use.';
+      if (error.toString().contains('ERROR_EMAIL_ALREADY_IN_USE')) {
+        errorMessage =
+            'The email address is already in use by another account.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
         errorMessage = 'This is not a valid email address';
       } else if (error.toString().contains('WEAK_PASSWORD')) {
@@ -59,7 +78,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Text(errorMessage),
           ),
           actions: <Widget>[
-            FlatButton(
+            CupertinoDialogAction(
               child: Text('OK'),
               onPressed: () => Navigator.of(context).pop(),
             )
@@ -75,180 +94,213 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFF030D18),
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.light,
-          child: Stack(
-            children: <Widget>[
-              Image.asset(
-                'assets/img/others/start.gif',
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-              ),
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.grey.withOpacity(0.1),
-              ),
-              SafeArea(
-                child: SingleChildScrollView(
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 50.0, left: 20),
-                              child: Text(
-                                'DEVSOC 20',
-                                style: Theme.of(context).textTheme.headline1,
-                              ),
-                            ),
-                            Flexible(
-                              child: Container(
-                                height: 150,
-                                padding: EdgeInsets.only(top: 20),
-                                child: Image.asset(
-                                  'assets/img/others/devsoc_shadow.png',
-                                  fit: BoxFit.fitHeight,
-                                  // width: 100,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
+      backgroundColor: Color(0xFF030D18),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: Stack(
+          children: <Widget>[
+            Center(
+              child: _controller.value.initialized
+                  ? AspectRatio(
+                      aspectRatio: 9 / 16,
+                      child: VideoPlayer(_controller),
+                    )
+                  : Container(),
+            ),
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Color(0xCC14192D),
+            ),
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: 30.0, left: 20),
+                            child: Row(
+                              textBaseline: TextBaseline.alphabetic,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
                               children: <Widget>[
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: 'Email',
-                                    labelStyle: TextStyle(color: Colors.white),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey),
-                                    ),
+                                Text(
+                                  'DEVSOC',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      textBaseline: TextBaseline.alphabetic,
+                                      fontFamily: 'SFProTextSemibold'),
+                                ),
+                                Text(
+                                  '20',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    textBaseline: TextBaseline.alphabetic,
                                   ),
-                                  keyboardType: TextInputType.emailAddress,
-                                  validator: (val) {
-                                    if (val == '') {
-                                      return 'This Field is required.';
-                                    }
-                                  },
-                                  onSaved: (val) {
-                                    _authData['email'] = val;
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        visisblePassword
-                                            ? FontAwesomeIcons.eye
-                                            : FontAwesomeIcons.eyeSlash,
-                                        color: Colors.grey,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          visisblePassword = !visisblePassword;
-                                        });
-                                      },
-                                    ),
-                                    labelText: 'Password',
-                                    labelStyle: TextStyle(color: Colors.white),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.grey),
-                                    ),
-                                  ),
-                                  keyboardType: TextInputType.emailAddress,
-                                  obscureText: !visisblePassword,
-                                  validator: (val) {
-                                    if (val == '') {
-                                      return 'This Field is required.';
-                                    }
-                                  },
-                                  onSaved: (val) {
-                                    _authData['password'] = val;
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 50,
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
-                                  height: 50,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: _isLoading
-                                        ? Center(
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation(
-                                                Colors.blue,
-                                              ),
-                                            ),
-                                          )
-                                        : RaisedButton(
-                                            color: Colors.blue,
-                                            textColor: Colors.white,
-                                            child: Text(
-                                              'REGISTER',
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                            onPressed: _submit,
-                                          ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                ),
-                                FlatButton(
-                                  textColor: Colors.white,
-                                  child: Text('Already Registered? Login Here'),
-                                  onPressed: () {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (ctx) => LoginScreen(),
-                                      ),
-                                    );
-                                  },
                                 ),
                               ],
                             ),
                           ),
+                          Flexible(
+                            child: Container(
+                              height: 100,
+                              padding: EdgeInsets.only(top: 20),
+                              child: Image.asset(
+                                'assets/img/others/devsoc_shadow.png',
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                controller: _emailController,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (val) {
+                                  if (val == '') {
+                                    return 'This Field is required.';
+                                  }
+                                },
+                                onSaved: (val) {
+                                  _authData['email'] = val;
+                                },
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                controller: _passwordController,
+                                decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      visisblePassword
+                                          ? FontAwesomeIcons.eye
+                                          : FontAwesomeIcons.eyeSlash,
+                                      color: Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        visisblePassword = !visisblePassword;
+                                      });
+                                    },
+                                  ),
+                                  labelText: 'Password',
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                obscureText: !visisblePassword,
+                                validator: (val) {
+                                  if (val == '') {
+                                    return 'This Field is required.';
+                                  }
+                                },
+                                onSaved: (val) {
+                                  _authData['password'] = val;
+                                },
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                height: 40,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: _isLoading
+                                      ? Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor: AlwaysStoppedAnimation(
+                                              Colors.blue,
+                                            ),
+                                          ),
+                                        )
+                                      : RaisedButton(
+                                          color: Color(0xff3284ff),
+                                          textColor: Colors.white,
+                                          child: Text(
+                                            'REGISTER',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontFamily: 'SFProTextSemiMed',
+                                            ),
+                                          ),
+                                          onPressed: _submit,
+                                        ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              FlatButton(
+                                textColor: Colors.white,
+                                child: Text(
+                                  'Already Registered? Login Here',
+                                  style: TextStyle(
+                                    fontFamily: 'SFProDisplayMed',
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (ctx) => LoginScreen(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
