@@ -99,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: _controller.value.initialized
                   ? AspectRatio(
-                      // aspectRatio: _controller.value.aspectRatio,
                       aspectRatio: 9 / 16,
                       child: VideoPlayer(_controller),
                     )

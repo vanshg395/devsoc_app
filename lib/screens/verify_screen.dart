@@ -35,7 +35,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
             Center(
               child: _controller.value.initialized
                   ? AspectRatio(
-                      // aspectRatio: _controller.value.aspectRatio,
                       aspectRatio: 9 / 16,
                       child: VideoPlayer(_controller),
                     )
@@ -86,7 +85,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
                               child: Image.asset(
                                 'assets/img/others/devsoc_shadow.png',
                                 fit: BoxFit.fitHeight,
-                                // width: 100,
                               ),
                             ),
                           ),
@@ -107,6 +105,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                   .copyWith(
                                     fontSize: 18,
                                     letterSpacing: 0,
+                                    fontFamily: 'SFProDisplayMed',
                                   ),
                             ),
                             Divider(

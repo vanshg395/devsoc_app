@@ -102,7 +102,6 @@ class _SignupScreenState extends State<SignupScreen> {
             Center(
               child: _controller.value.initialized
                   ? AspectRatio(
-                      // aspectRatio: _controller.value.aspectRatio,
                       aspectRatio: 9 / 16,
                       child: VideoPlayer(_controller),
                     )
@@ -153,7 +152,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               child: Image.asset(
                                 'assets/img/others/devsoc_shadow.png',
                                 fit: BoxFit.fitHeight,
-                                // width: 100,
                               ),
                             ),
                           ),

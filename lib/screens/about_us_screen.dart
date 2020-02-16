@@ -7,7 +7,6 @@ class AboutUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        // padding: EdgeInsets.symmetric(horizontal: 20),
         color: Color(0xFF030D18),
         child: SingleChildScrollView(
           child: Column(

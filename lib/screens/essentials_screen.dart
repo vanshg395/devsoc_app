@@ -31,7 +31,6 @@ class EssentialsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Provider.of<Auth>(context, listen: false).name);
     return SafeArea(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
