@@ -7,6 +7,7 @@ import 'package:video_player/video_player.dart';
 
 import './login_screen.dart';
 import '../providers/auth.dart';
+import '../main.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -50,28 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).signUp(email, password);
-      _emailController.clear();
-      _passwordController.clear();
-      setState(() {
-        _isLoading = false;
-      });
-      await showDialog(
-        context: context,
-        child: CupertinoAlertDialog(
-          title: Text('Success'),
-          content: Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text(
-                'You are successfully registered! Please restart your app to login.'),
-          ),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text('OK'),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-        ),
-      );
+      RestartWidget.restartApp(context);
     } catch (error) {
       if (error.toString().contains('ERROR_EMAIL_ALREADY_IN_USE')) {
         errorMessage =
