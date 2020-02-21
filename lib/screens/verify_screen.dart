@@ -13,6 +13,8 @@ class VerifyScreen extends StatefulWidget {
 
 class _VerifyScreenState extends State<VerifyScreen> {
   VideoPlayerController _controller;
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -124,6 +126,17 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                     ),
                               ),
                               onTap: () async {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                try {
+                                  await Provider.of<Auth>(context,
+                                          listen: false)
+                                      .sendEmail();
+                                } catch (e) {}
+                                setState(() {
+                                  _isLoading = false;
+                                });
                                 await showDialog(
                                   context: context,
                                   builder: (context) => CupertinoAlertDialog(
@@ -139,16 +152,24 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                     ],
                                   ),
                                 );
-                                await Provider.of<Auth>(context, listen: false)
-                                    .sendEmail();
                               },
                             ),
+                            if (_isLoading) ...[
+                              SizedBox(
+                                height: 5,
+                              ),
+                              LinearProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation(
+                                  Colors.blue,
+                                ),
+                              ),
+                            ],
                             SizedBox(
                               height: 30,
                             ),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.8,
-                              height: 50,
+                              height: 40,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: RaisedButton(
@@ -157,7 +178,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                                   child: Text(
                                     'GET STARTED',
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 14,
                                     ),
                                   ),
                                   onPressed: () async {

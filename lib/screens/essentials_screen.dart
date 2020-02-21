@@ -133,8 +133,10 @@ class EssentialsScreen extends StatelessWidget {
                       data: Provider.of<Auth>(context, listen: false).email,
                       backgroundColor: Color(0xFF072031),
                       foregroundColor: Colors.white,
-                      embeddedImage:
-                          AssetImage('assets/img/others/devsoc_shadow.png'),
+                      embeddedImage: AssetImage('assets/img/others/qrlogo.png'),
+                      embeddedImageStyle: QrEmbeddedImageStyle(
+                        size: Size(40, 45),
+                      ),
                     ),
                   ),
                 ),
@@ -142,22 +144,26 @@ class EssentialsScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              RaisedButton(
-                shape: RoundedRectangleBorder(
+              Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 40,
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(50),
-                ),
-                color: Color(0xff3284ff),
-                textColor: Colors.white,
-                child: Text(
-                  'LOGOUT',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'SFProTextSemiMed',
+                  child: RaisedButton(
+                    color: Color(0xff3284ff),
+                    textColor: Colors.white,
+                    child: Text(
+                      'LOGOUT',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'SFProTextSemiMed',
+                      ),
+                    ),
+                    onPressed: () async {
+                      await Provider.of<Auth>(context, listen: false).logout();
+                    },
                   ),
                 ),
-                onPressed: () {
-                  Provider.of<Auth>(context, listen: false).logout();
-                },
               ),
               SizedBox(
                 height: 20,

@@ -7,6 +7,7 @@ import 'package:video_player/video_player.dart';
 
 import '../providers/auth.dart';
 import './signup_screen.dart';
+import '../main.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -48,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).login(email, password);
+      RestartWidget.restartApp(context);
     } catch (error) {
       if (error.toString().contains('INVALID_EMAIL')) {
         errorMessage = 'This is not a valid email address';
@@ -181,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
+                                keyboardAppearance: Brightness.light,
                                 validator: (val) {
                                   if (val == '') {
                                     return 'This Field is required.';
@@ -224,6 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
+                                keyboardAppearance: Brightness.light,
                                 obscureText: !visisblePassword,
                                 validator: (val) {
                                   if (val == '') {

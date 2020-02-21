@@ -85,7 +85,7 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'WHAT IS THE VENUE OF THE HACKATHON?',
+                  'What\'s the cost of the hackathon?'.toUpperCase(),
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -99,7 +99,7 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'First Phase of the Hackathon is Online that is idea submission. Main event which is from 16th March will be conducted in Anna Auditorium, VIT Vellore.',
+                  'DEVSOC20 is completely free thanks to our sponsors! We\'ll also provide you with enough swags, drinks, meals throughout the hackathon.',
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -114,7 +114,7 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'IS IT NECESSARY FOR THE WHOLE TO BE PRESENT ALL THE TIME?',
+                  'What\'s the application process like?'.toUpperCase(),
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -128,7 +128,7 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'No, not necessarily, but atleast one member should be present while pitching.',
+                  'You\'re required to register with us on Devfolio where you\'ll be asked for basic details and your resume. We’ll get to know about your abilities from your past projects, GitHub profile, participation/awards in other hackathons. We\'ll shortlist teams for the offline hackathon round through this.',
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -143,7 +143,8 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'DO I NEED TO HAVE SPECIFIC QUALIFICATIONS TO BE PART OF THE HACKATHON?',
+                  'I\'m a fresher and I don\'t have a good resume. Will I be selected?'
+                      .toUpperCase(),
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -157,7 +158,7 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'If you love to code, you\'re more than welcome to participate in the Hackathon.',
+                  'We will be evaluating everyone based on different metrics. We\'ll take into account if you\'re a fresher and where you stand amongst your peers. If you don\'t have anything technical to add to your resume, feel free to add any public speaking events or other competitions you\'ve been to.',
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -172,7 +173,7 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'WHAT IS THE COST OF THE HACKATHON?',
+                  'What is the venue for the hackathon?'.toUpperCase(),
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -186,7 +187,96 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  'There is no registration fee for the Hackathon. It is absolutely free.',
+                  'First Phase of the Hackathon is Online that is resume submission. Main event which is from 16th March will be conducted in Anna Auditorium, VIT Vellore.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 2,
+                    fontFamily: 'SFProDisplayLight',
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Can I participate alone?'.toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 2,
+                    fontFamily: 'SFProDisplayMed',
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'No! This hackathon is strictly a team competition where you can have 2-5 members in your team. Most teams aim to have a mix of people with both design and developer skills.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 2,
+                    fontFamily: 'SFProDisplayLight',
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Do I need to have specific qualifications to be a part of the hack?'
+                      .toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 2,
+                    fontFamily: 'SFProDisplayMed',
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'If you love to code, you\'re more than welcome to participate in the hackathon.',
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 2,
+                    fontFamily: 'SFProDisplayLight',
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Does my whole team need to be present at the venue?'
+                      .toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 2,
+                    fontFamily: 'SFProDisplayMed',
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'It\'s not mandatory for the whole team to be there all the time but atleast one member should be present during every pitch. The whole team needs to be present for the final pitch.',
                   style: TextStyle(
                     fontSize: 12,
                     letterSpacing: 2,

@@ -185,6 +185,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
+                                keyboardAppearance: Brightness.light,
                                 validator: (val) {
                                   if (val == '') {
                                     return 'This Field is required.';
@@ -229,6 +230,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   ),
                                 ),
                                 keyboardType: TextInputType.emailAddress,
+                                keyboardAppearance: Brightness.light,
                                 obscureText: !visisblePassword,
                                 validator: (val) {
                                   if (val == '') {
