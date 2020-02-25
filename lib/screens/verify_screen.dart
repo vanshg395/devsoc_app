@@ -37,7 +37,8 @@ class _VerifyScreenState extends State<VerifyScreen> {
             Center(
               child: _controller.value.initialized
                   ? AspectRatio(
-                      aspectRatio: 9 / 16,
+                      aspectRatio: MediaQuery.of(context).size.width /
+                          MediaQuery.of(context).size.height,
                       child: VideoPlayer(_controller),
                     )
                   : Container(),

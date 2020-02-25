@@ -102,7 +102,8 @@ class _SignupScreenState extends State<SignupScreen> {
             Center(
               child: _controller.value.initialized
                   ? AspectRatio(
-                      aspectRatio: 9 / 16,
+                      aspectRatio: MediaQuery.of(context).size.width /
+                          MediaQuery.of(context).size.height,
                       child: VideoPlayer(_controller),
                     )
                   : Container(),
@@ -131,9 +132,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                 Text(
                                   'DEVSOC',
                                   style: TextStyle(
-                                      fontSize: 22,
-                                      textBaseline: TextBaseline.alphabetic,
-                                      fontFamily: 'SFProTextSemibold'),
+                                    fontSize: 22,
+                                    textBaseline: TextBaseline.alphabetic,
+                                    fontFamily: 'SFProTextSemibold',
+                                  ),
                                 ),
                                 Text(
                                   '20',
