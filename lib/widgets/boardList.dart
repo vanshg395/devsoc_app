@@ -8,7 +8,7 @@ class BoardList extends StatelessWidget {
         if (await canLaunch(url)) {
           await launch(
             url,
-            forceSafariVC: false,
+            forceSafariVC: true,
           );
         }
       },
