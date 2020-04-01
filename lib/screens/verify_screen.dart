@@ -27,6 +27,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF030D18),

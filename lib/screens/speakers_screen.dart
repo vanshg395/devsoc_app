@@ -21,6 +21,12 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(

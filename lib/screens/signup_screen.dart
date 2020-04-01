@@ -25,8 +25,6 @@ class _SignupScreenState extends State<SignupScreen> {
     'password': '',
   };
   String errorMessage = '';
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -37,6 +35,12 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     _controller.play();
     _controller.setLooping(true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Future<void> _submit() async {
@@ -94,6 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF030D18),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -169,7 +174,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Column(
                             children: <Widget>[
                               TextFormField(
-                                controller: _emailController,
                                 decoration: InputDecoration(
                                   labelText: 'Email',
                                   labelStyle: TextStyle(color: Colors.white),
@@ -201,7 +205,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                 height: 20,
                               ),
                               TextFormField(
-                                controller: _passwordController,
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
                                     icon: Icon(

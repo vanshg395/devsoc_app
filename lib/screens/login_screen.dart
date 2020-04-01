@@ -37,6 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
     _controller.setLooping(true);
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       return;

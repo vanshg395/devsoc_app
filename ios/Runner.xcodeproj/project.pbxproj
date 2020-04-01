@@ -18,8 +18,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		FC2ECE352406B20A0098B4ED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FC2ECE342406B20A0098B4ED /* GoogleService-Info.plist */; };
-		FC654077240595F50082B421 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93049C5B6D548F52F088957B /* Pods_Runner.framework */; };
-		FC654078240595F50082B421 /* Pods_Runner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93049C5B6D548F52F088957B /* Pods_Runner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FC89D6AD2406BD9D0014D1D0 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93049C5B6D548F52F088957B /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,7 +30,6 @@
 			files = (
 				3B80C3951E831B6300D905FE /* App.framework in Embed Frameworks */,
 				9705A1C71CF904A300538489 /* Flutter.framework in Embed Frameworks */,
-				FC654078240595F50082B421 /* Pods_Runner.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,7 +66,7 @@
 			files = (
 				9705A1C61CF904A100538489 /* Flutter.framework in Frameworks */,
 				3B80C3941E831B6300D905FE /* App.framework in Frameworks */,
-				FC654077240595F50082B421 /* Pods_Runner.framework in Frameworks */,
+				FC89D6AD2406BD9D0014D1D0 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
